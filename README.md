@@ -192,10 +192,6 @@ python3 -m src.train_genration --encoder-type $ENCODER_TYPE --data-prefix data/$
     --src-vocab-path vocab/$TASK_NAME_SOURCE.vocab --tgt-vocab-path vocab/$TASK_NAME_TARGET.vocab --save-dir models/$TASK_NAME 
 ```
 
-### Evaluate a Model
-Just run ``python3 -m src.eval_classification``, ``python3 -m src.eval_sentrel_classification`` or ``python3 -m src
-.eval_generation`` with test data in the folder of ``data/``.
-
 ## Cite TreeEnc
 If you find our code useful, please consider citing
 ```

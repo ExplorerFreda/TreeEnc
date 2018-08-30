@@ -762,7 +762,7 @@ class Seq2SeqModel(nn.Module):
         self.word_embedding = nn.Embedding(
             num_embeddings=num_src_words,
             embedding_dim=word_dim)
-        if self.encoder_type in ['balance', 'parsing', 'left', 'right']:
+        if self.encoder_type in ['balanced', 'parsing', 'left', 'right']:
             self.encoder = RecursiveTreeLSTMEncoder(
                 word_dim=word_dim,
                 hidden_dim=hidden_dim,
@@ -800,7 +800,7 @@ class Seq2SeqModel(nn.Module):
             sents_info = self.encoder(
                 inp=embeddings, length=src_lengths, return_select_masks=return_select_masks
             )
-        elif self.encoder_type in ['balance', 'parsing', 'left', 'right']:
+        elif self.encoder_type in ['balanced', 'parsing', 'left', 'right']:
             sents_info = self.encoder(
                 inp=embeddings, length=src_lengths, fixed_masks=fixed_masks
             )

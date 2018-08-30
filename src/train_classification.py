@@ -13,6 +13,7 @@ from src.data import Vocab
 from src.models import SentClassModel
 from src.utils import *
 
+torch.save(args, args.save_dir + '/args.pt')
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
@@ -205,8 +206,8 @@ def main():
     parser.add_argument('--pooling', type=str, default=None)
     parser.add_argument('--batchnorm', default=False, action='store_true')
     parser.add_argument('--dropout', type=float, default=0)
-    parser.add_argument('--anneal-temperature-every', type=int, default=1e10)
-    parser.add_argument('--anneal-temperature-rate', type=float, default=0)
+    parser.add_argument('--anneal-temperature-every', type=int, default=1e10)  # for Gumbel
+    parser.add_argument('--anneal-temperature-rate', type=float, default=0)  # for Gumbel
     parser.add_argument('--glove', default=None)
     parser.add_argument('--fix-word-embedding', default=False, action='store_true')
     parser.add_argument('--batch-size', type=int, default=64)
@@ -224,6 +225,7 @@ def main():
     if os.path.exists(args.save_dir):
         os.system('rm -rf ' + args.save_dir)
     os.system('mkdir ' + args.save_dir)
+
     torch.save(args, args.save_dir + '/args.pt')
     handler = logging.FileHandler(args.save_dir + '/train.log', 'w')
     handler.setLevel(logging.INFO)
