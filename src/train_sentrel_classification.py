@@ -1,16 +1,15 @@
 import argparse
 import logging
-import os
-
 import math
+import os
 
 from torch import nn, optim
 from torch.nn.utils import clip_grad_norm
 from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader
 
-from src.data import Vocab
-from src.models import SentClassModel
+from src.data import Vocab, SentRelDataset
+from src.models import SentRelModel
 from src.utils import *
 
 
@@ -21,18 +20,15 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 
 def train(args):
     word_vocab = Vocab.from_file(args.vocab_path, add_pad=True, add_unk=True)
-    label_vocab = Vocab(dict([(i+1, i) for i in range(args.num_classes)]), add_pad=False, add_unk=False)
-    train_dataset = SentenceDataset(
+    train_dataset = SentRelDataset(
         data_path=args.data_prefix + '_' + 'train.json',
         word_vocab=word_vocab,
-        label_vocab=label_vocab,
         max_length=args.max_length,
         lower=args.lower
     )
-    valid_dataset = SentenceDataset(
+    valid_dataset = SentRelDataset(
         data_path=args.data_prefix + '_' + 'dev.json',
         word_vocab=word_vocab,
-        label_vocab=label_vocab,
         max_length=args.max_length,
         lower=args.lower
     )
@@ -49,7 +45,7 @@ def train(args):
         pin_memory=True
     )
 
-    model = SentClassModel(
+    model = SentRelModel(
         num_classes=args.num_classes, num_words=len(word_vocab),
         word_dim=args.word_dim, hidden_dim=args.hidden_dim,
         clf_hidden_dim=args.clf_hidden_dim,
@@ -87,37 +83,45 @@ def train(args):
 
     def run_iter(batch, is_training):
         model.train(is_training)
-        sentences = wrap_with_variable(batch['sentences'], volatile=not is_training)
-        lengths = wrap_with_variable(batch['lengths'], volatile=not is_training)
+        sentences_1 = wrap_with_variable(batch['sentences_1'], volatile=not is_training)
+        sentences_2 = wrap_with_variable(batch['sentences_2'], volatile=not is_training)
+        lengths_1 = wrap_with_variable(batch['lengths_1'], volatile=not is_training)
+        lengths_2 = wrap_with_variable(batch['lengths_2'], volatile=not is_training)
         labels = wrap_with_variable(batch['labels'], volatile=not is_training)
         tree_strs = None
         if args.encoder_type == 'gumbel':
             if is_training:
-                logits = model(sentences, lengths)
+                logits = model((sentences_1, sentences_2), (lengths_1, lengths_2))
             else:
-                logits, sentence_info = model(sentences, lengths, return_select_masks=True)
-                masks = sentence_info[-1]
-                raw_sentences = batch['raw_sentences']
-                tree_strs = get_tree_structures(raw_sentences, lengths, masks)
+                logits, (sent_info_1, _) = model(
+                    (sentences_1, sentences_2), (lengths_1, lengths_2), return_select_masks=True)
+                raw_sentences_1 = batch['raw_sentences_1']
+                tree_strs = get_tree_structures(raw_sentences_1, lengths_1, sent_info_1[-1])
         elif args.encoder_type in ['parsing', 'balanced', 'left', 'right']:
             if args.encoder_type == 'parsing':
-                tree_masks = batch['masks']
-                for i, mask in enumerate(tree_masks):
-                    tree_masks[i] = wrap_with_variable(mask, volatile=not is_training)
+                tree_masks_1 = batch['masks_1']
+                for i, mask in enumerate(tree_masks_1):
+                    tree_masks_1[i] = wrap_with_variable(mask, volatile=not is_training)
+                tree_masks_2 = batch['masks_2']
+                for i, mask in enumerate(tree_masks_2):
+                    tree_masks_2[i] = wrap_with_variable(mask, volatile=not is_training)
             elif args.encoder_type == 'balanced':
-                tree_masks = generate_balance_masks(lengths.data.tolist())
+                tree_masks_1 = generate_balance_masks(lengths_1.data.tolist())
+                tree_masks_2 = generate_balance_masks(lengths_2.data.tolist())
             elif args.encoder_type == 'left':
-                tree_masks = generate_left_branch_masks(lengths.data.tolist())
+                tree_masks_1 = generate_left_branch_masks(lengths_1.data.tolist())
+                tree_masks_2 = generate_left_branch_masks(lengths_2.data.tolist())
             elif args.encoder_type == 'right':
-                tree_masks = generate_right_branch_masks(lengths.data.tolist())
+                tree_masks_1 = generate_right_branch_masks(lengths_1.data.tolist())
+                tree_masks_2 = generate_right_branch_masks(lengths_2.data.tolist())
             else:
                 raise Exception('Encoder type {:s} not implemented.'.format(args.encoder_type))
-            logits = model(sentences, lengths, tree_masks)
-            raw_sentences = batch['raw_sentences']
+            logits = model((sentences_1, sentences_2), (lengths_1, lengths_2), (tree_masks_1, tree_masks_2))
+            raw_sentences_1 = batch['raw_sentences_1']
             if not is_training:
-                tree_strs = get_tree_structures(raw_sentences, lengths, tree_masks)
+                tree_strs = get_tree_structures(raw_sentences_1, lengths_1, tree_masks_1)
         elif args.encoder_type == 'lstm':
-            logits = model(sentences, lengths)
+            logits = model((sentences_1, sentences_2), (lengths_1, lengths_2))
         else:
             raise Exception('Encoder {:s} not implemented.'.format(args.encoder_type))
         label_pred = logits.max(1)[1]
@@ -150,9 +154,9 @@ def train(args):
             avg_train_loss += unwrap_scalar_variable(train_loss)
             avg_train_accuracy += unwrap_scalar_variable(train_accuracy)
             iter_count += 1
-            if (batch_iter + 1) % args.log_period == 0:
-                avg_train_loss /= args.log_period
-                avg_train_accuracy /= args.log_period
+            if (batch_iter + 1) % args.train_log_every == 0:
+                avg_train_loss /= args.train_log_every
+                avg_train_accuracy /= args.train_log_every
                 logger.info('Epoch {:d}: {:d} batches, train loss = {:.4f}, train accuracy = {:.4f}'.format(
                     epoch_num, batch_iter + 1, avg_train_loss, avg_train_accuracy
                 ))
@@ -199,25 +203,24 @@ def main():
     parser.add_argument('--hidden-dim', type=int, default=300)
     parser.add_argument('--clf-hidden-dim', type=int, default=1024)
     parser.add_argument('--clf-num-layers', type=int, default=1)
-    parser.add_argument('--num-classes', type=int, required=True)
+    parser.add_argument('--num-classes', type=int, default=3)
     parser.add_argument('--leaf-rnn', default=False, action='store_true')
     parser.add_argument('--bidirectional', default=False, action='store_true')
     parser.add_argument('--pooling', type=str, default=None)
     parser.add_argument('--batchnorm', default=False, action='store_true')
     parser.add_argument('--dropout', type=float, default=0)
-    parser.add_argument('--anneal-temperature-every', type=int, default=1e10)
-    parser.add_argument('--anneal-temperature-rate', type=float, default=0)
     parser.add_argument('--glove', default=None)
     parser.add_argument('--fix-word-embedding', default=False, action='store_true')
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--max-epoch', type=int, default=5)
     parser.add_argument('--save-dir', type=str, required=True)
-    parser.add_argument('--lr', type=float, default=.0002)
+    parser.add_argument('--lr', type=float, default=.001)
     parser.add_argument('--optimizer', type=str, default='Adam')
+    parser.add_argument('--anneal-temperature-every', type=int, default=1e10)
+    parser.add_argument('--anneal-temperature-rate', type=float, default=0)
     parser.add_argument('--l2reg', type=float, default=0)
-    parser.add_argument('--log-period', type=int, default=100)
+    parser.add_argument('--train-log-every', type=int, default=100)
     parser.add_argument('--load-checkpoint', default=None)
-    parser.add_argument('--comp-method', type=str, default='dot_nd')
     args = parser.parse_args()
 
     # config log

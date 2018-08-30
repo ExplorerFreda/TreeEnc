@@ -605,13 +605,13 @@ class SentClassModel(nn.Module):
         return self.forward(*args, **kwargs)
 
 
-class PairedSentClassModel(nn.Module):
+class SentRelModel(nn.Module):
 
     def __init__(self, num_classes, num_words, word_dim, hidden_dim,
                  clf_hidden_dim, clf_num_layers, pooling_method,
                  use_batchnorm, dropout_prob, bidirectional, encoder_type,
                  use_leaf_rnn=False):
-        super(PairedSentClassModel, self).__init__()
+        super(SentRelModel, self).__init__()
         self.num_classes = num_classes
         self.word_dim = word_dim
         self.hidden_dim = hidden_dim
@@ -635,7 +635,7 @@ class PairedSentClassModel(nn.Module):
                 gumbel_temperature=1,
                 bidirectional=bidirectional,
             )
-        elif encoder_type == 'rvnn':
+        elif encoder_type in ['parsing', 'balanced', 'left', 'right']:
             self.encoder = RecursiveTreeLSTMEncoder(
                 word_dim=word_dim, hidden_dim=hidden_dim,
                 use_leaf_rnn=use_leaf_rnn,
@@ -674,7 +674,7 @@ class PairedSentClassModel(nn.Module):
             sents_info_2 = self.encoder(
                 inp=embeddings_2, length=lengths[1], return_select_masks=return_select_masks
             )
-        elif self.encoder_type == 'rvnn':
+        elif self.encoder_type in ['parsing', 'balanced', 'left', 'right']:
             sents_info_1 = self.encoder(
                 inp=embeddings_1, length=lengths[0], fixed_masks=fixed_masks[0]
             )
