@@ -27,21 +27,105 @@ representation.
 
 We evaluate the models in the following ten datasets, of which the metadata are summarized in the following table. 
 
-|Dataset|#Train| #Dev | #Test | #Class | Avg. Length| 
-|:-----:|-----:|-----:|------:|-------:|-----------:|
-|<td colspan=6>Sentence Classification|
-|AG News |  60K |6.7K |4.3K |4 |31.5|
-|Amazon Review Polarity | 128K | 14K |16K |2 |33.7|
-|Amazon Review Full |  110K| 12K| 27K| 5| 33.8|
-|DBpedia|  106K| 11K |15K| 14 |20.1|
-|Word-Level Semantic Relation |  7.1K| 891 |2.7K| 10| 23.1|
-|<td colspan=6>Sentence Relation Classification|
-|SNLI  |550K |10K |10K |3 |11.2|
-|Conjunction Prediction|  552K |10K |10K |9 |23.3|
-|<td colspan=6>Sentence Generation|
-|Paraphrasing| 98K| 2K| 3K |N/A| 10.2|
-|Machine Translation| 1.2M| 20K| 80K| N/A| 34.1|
-|Autoencoder| 1.2M| 20K| 80K |N/A |34.1|
+<table>
+  <tr>
+    <th>Dataset</th>
+    <th>#Train</th>
+    <th>#Dev</th>
+    <th>#Test</th>
+    <th>#Class</th>
+    <th>Avg. Length</th>
+  </tr>
+  <tr>
+    <td colspan="6">Sentence Classification</td>
+  </tr>
+  <tr>
+    <td>AG News</td>
+    <td align="right">60K</td>
+    <td align="right">6.7K</td>
+    <td align="right">4.3K</td>
+    <td align="right">4</td>
+    <td align="right">31.5</td>
+  </tr>
+  <tr>
+    <td>Amazon Review Polarity</td>
+    <td align="right">128K</td>
+    <td align="right">14K</td>
+    <td align="right">16K</td>
+    <td align="right">2</td>
+    <td align="right">33.7</td>
+  </tr>
+  <tr>
+    <td>Amazon Review Full</td>
+    <td align="right">110K</td>
+    <td align="right">12K</td>
+    <td align="right">27K</td>
+    <td align="right">5</td>
+    <td align="right">33.8</td>
+  </tr>
+  <tr>
+    <td>DBpedia</td>
+    <td align="right">106K</td>
+    <td align="right">11K</td>
+    <td align="right">15K</td>
+    <td align="right">14</td>
+    <td align="right">20.1</td>
+  </tr>
+  <tr>
+    <td>Word-Level Semantic Relation</td>
+    <td align="right">7.1K</td>
+    <td align="right">891</td>
+    <td align="right">2.7K</td>
+    <td align="right">10</td>
+    <td align="right">23.1</td>
+  </tr>
+  <tr>
+    <td colspan="6">Sentence Relation Classification</td>
+  </tr>
+  <tr>
+    <td>SNLI</td>
+    <td align="right">550K</td>
+    <td align="right">10K</td>
+    <td align="right">10K</td>
+    <td align="right">3</td>
+    <td align="right">11.2</td>
+  </tr>
+  <tr>
+    <td>Conjunction Prediction</td>
+    <td align="right">552K</td>
+    <td align="right">10K</td>
+    <td align="right">10K</td>
+    <td align="right">9</td>
+    <td align="right">23.3</td>
+  </tr>
+  <tr>
+    <td colspan="6"><span style="font-style:italic">Sentence Generation</span></td>
+  </tr>
+  <tr>
+    <td>Paraphrasing</td>
+    <td align="right">98K</td>
+    <td align="right">2K</td>
+    <td align="right">3K</td>
+    <td align="right">N/A</td>
+    <td align="right">10.2</td>
+  </tr>
+  <tr>
+    <td>Machine Translation</td>
+    <td align="right">1.2M</td>
+    <td align="right">20K</td>
+    <td align="right">80K</td>
+    <td align="right">N/A</td>
+    <td align="right">34.1</td>
+  </tr>
+  <tr>
+    <td>Autoencoder</td>
+    <td align="right">1.2M</td>
+    <td align="right">20K</td>
+    <td align="right">80K</td>
+    <td align="right">N/A</td>
+    <td align="right">34.1</td>
+  </tr>
+</table>
 
 
 We provide a sample of our data format at ``data/``.
