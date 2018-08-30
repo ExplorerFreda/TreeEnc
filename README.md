@@ -2,7 +2,11 @@
 
 This repo includes the implementation of our paper "On Tree-Based Neural Sentence Modeling" at EMNLP 2018 [1].
 
-Developed by [Haoyue (Freda) Shi](http://explorerfreda.github.io), [Hao Zhou](http://zhouh.github.io) and Jiaze Chen.
+
+In this repo, you may find 
+* various kinds of text encoders (contributions for new encoders are always welcome!!);
+* a unified PyTorch framework which can support three common groups of NLP tasks.
+
 
 ## Overview
 
@@ -40,7 +44,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td colspan="6">Sentence Classification</td>
   </tr>
   <tr>
-    <td>AG News</td>
+    <td>AG News [5]</td>
     <td align="right">60K</td>
     <td align="right">6.7K</td>
     <td align="right">4.3K</td>
@@ -48,7 +52,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td align="right">31.5</td>
   </tr>
   <tr>
-    <td>Amazon Review Polarity</td>
+    <td>Amazon Review Polarity [5]</td>
     <td align="right">128K</td>
     <td align="right">14K</td>
     <td align="right">16K</td>
@@ -56,7 +60,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td align="right">33.7</td>
   </tr>
   <tr>
-    <td>Amazon Review Full</td>
+    <td>Amazon Review Full [5]</td>
     <td align="right">110K</td>
     <td align="right">12K</td>
     <td align="right">27K</td>
@@ -64,7 +68,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td align="right">33.8</td>
   </tr>
   <tr>
-    <td>DBpedia</td>
+    <td>DBpedia [5]</td>
     <td align="right">106K</td>
     <td align="right">11K</td>
     <td align="right">15K</td>
@@ -72,7 +76,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td align="right">20.1</td>
   </tr>
   <tr>
-    <td>Word-Level Semantic Relation</td>
+    <td>Word-Level Semantic Relation [6]</td>
     <td align="right">7.1K</td>
     <td align="right">891</td>
     <td align="right">2.7K</td>
@@ -83,7 +87,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td colspan="6">Sentence Relation Classification</td>
   </tr>
   <tr>
-    <td>SNLI</td>
+    <td>SNLI [7]</td>
     <td align="right">550K</td>
     <td align="right">10K</td>
     <td align="right">10K</td>
@@ -91,7 +95,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
     <td align="right">11.2</td>
   </tr>
   <tr>
-    <td>Conjunction Prediction</td>
+    <td>Conjunction Prediction [8]</td>
     <td align="right">552K</td>
     <td align="right">10K</td>
     <td align="right">10K</td>
@@ -129,6 +133,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
 
 
 We provide a sample of our data format at ``data/``.
+You may process your own data following our [instruction](data/data-instruction.md).
 Please [contact Freda](mailto:freda@ttic.edu) if you need a copy of our experimental datasets. The copyrights
 are held by the original authors.  
 
@@ -203,6 +208,10 @@ python3 -m src.train_genration \
     --save-dir models/$TASK_NAME 
 ```
 
+### Evaluate a Model
+Just run ``python3 -m src.eval_classification``, ``python3 -m src.eval_sentrel_classification`` or ``python3 -m src
+.eval_generation`` with test data in the folder of ``data/``.
+
 ## Cite TreeEnc
 If you find our code useful, please consider citing
 ```
@@ -225,3 +234,12 @@ If you find our code useful, please consider citing
 [3] Yue Zhang and Stephen Clark. 2011. Syntactic Processing using the Generalized Perceptron and Beam Search. *Computational Linguistics*.
 
 [4] Richard Socher, Alex Perelygin, Jean Wu, Jason Chuang, Christopher D. Manning, Andrew Ng, and Christopher Potts. 2013. Recursive Deep Models for Semantic Compositionality over a Sentiment Treebank. In *Proc. of EMNLP*.
+
+[5] Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015. Character-Level Convolutional Networks for Text Classification. In Proc. of NIPS
+
+[6] Iris Hendrickx, Su Nam Kim, Zornitsa Kozareva, Preslav Nakov, Diarmuid O Seaghdha, Sebastian Pado, Marco Pennacchiotti, Lorenza Romano, and Stan Szpakowicz. 2009. Semeval-2010 Task 8: Multi-Way Classification of Semantic Relations between Pairs of Nominals. In Proc. of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions
+
+[7] Samuel R. Bowman, Gabor Angeli, Christopher Potts, and Christopher D. Manning. 2015. A Large Annotated Corpus for Learning Natural Language Inference. In Proc. of EMNLP.
+
+[8] Yacine Jernite, Samuel R. Bowman, and David Sontag. 2017. Discourse-based Objectives for Fast Unsupervised Sentence Representation Learning. arXiv preprint arXiv:1705.00557.
+
