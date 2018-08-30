@@ -215,11 +215,11 @@ If you find our code useful, please consider citing
 
 [4] Richard Socher, Alex Perelygin, Jean Wu, Jason Chuang, Christopher D. Manning, Andrew Ng, and Christopher Potts. 2013. Recursive Deep Models for Semantic Compositionality over a Sentiment Treebank. In *Proc. of EMNLP*.
 
-[5] Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015. Character-Level Convolutional Networks for Text Classification. In Proc. of NIPS
+[5] Xiang Zhang, Junbo Zhao, and Yann LeCun. 2015. Character-Level Convolutional Networks for Text Classification. In *Proc. of NIPS*
 
-[6] Iris Hendrickx, Su Nam Kim, Zornitsa Kozareva, Preslav Nakov, Diarmuid O Seaghdha, Sebastian Pado, Marco Pennacchiotti, Lorenza Romano, and Stan Szpakowicz. 2009. Semeval-2010 Task 8: Multi-Way Classification of Semantic Relations between Pairs of Nominals. In Proc. of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions
+[6] Iris Hendrickx, Su Nam Kim, Zornitsa Kozareva, Preslav Nakov, Diarmuid O Seaghdha, Sebastian Pado, Marco Pennacchiotti, Lorenza Romano, and Stan Szpakowicz. 2009. Semeval-2010 Task 8: Multi-Way Classification of Semantic Relations between Pairs of Nominals. In *Proc. of the Workshop on Semantic Evaluations: Recent Achievements and Future Directions*
 
-[7] Samuel R. Bowman, Gabor Angeli, Christopher Potts, and Christopher D. Manning. 2015. A Large Annotated Corpus for Learning Natural Language Inference. In Proc. of EMNLP.
+[7] Samuel R. Bowman, Gabor Angeli, Christopher Potts, and Christopher D. Manning. 2015. A Large Annotated Corpus for Learning Natural Language Inference. In *Proc. of EMNLP*.
 
-[8] Yacine Jernite, Samuel R. Bowman, and David Sontag. 2017. Discourse-based Objectives for Fast Unsupervised Sentence Representation Learning. arXiv preprint arXiv:1705.00557.
+[8] Yacine Jernite, Samuel R. Bowman, and David Sontag. 2017. Discourse-based Objectives for Fast Unsupervised Sentence Representation Learning. *arXiv preprint arXiv:1705.00557.*
 
