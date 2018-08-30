@@ -157,12 +157,8 @@ We just introduce some important options here. For adjusting more detailed ones 
 
 #### Sentence Classification 
 ```
-python3 -m src.train_classification \
-    --encoder-type $ENCODER_TYPE \
-    --data-prefix data/$TASK_NAME \
-    --vocab-path vocab/$TASK_NAME.vocab \
-    --num-classes $NUM_CLASSES \
-    --save-dir models/$TASK_NAME \
+python3 -m src.train_classification --encoder-type $ENCODER_TYPE --data-prefix data/$TASK_NAME \
+    --vocab-path vocab/$TASK_NAME.vocab --num-classes $NUM_CLASSES --save-dir models/$TASK_NAME \
     --pooling $POOLING_METHOD
 ```
 
@@ -176,12 +172,7 @@ Please refer to our paper for details.
 
 Example (run balanced tree encoder on DBpedia dataset): 
 ```
-python3 -m src.train_classification \
-    --encoder-type balanced \
-    --data-prefix data/$TASK_NAME \
-    --vocab-path vocab/$TASK_NAME.vocab \
-    --num-classes $NUM_CLASSES \
-    --save-dir models/$TASK_NAME \
+python3 -m src.train_classification --encoder-type balanced --data-prefix data/dbpedia --vocab-path vocab/dbpedia.vocab --num-classes 14 --save-dir models/dbpedia
 ```
 
 If you would like to train a bi-LSTM or tree LSTM with bidirectional leaf RNN, please add ``--bidirectional`` or 
