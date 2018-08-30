@@ -1,4 +1,5 @@
 # [On Tree-Based Neural Sentence Modeling](https://arxiv.org/pdf/1808.09644.pdf)
+Authors: [Haoyue Shi](http://explorerfreda.github.io), [Hao Zhou](http://zhouh.github.io), Jiaze Chen and [Lei Li](http://www.cs.cmu.edu/~leili/). 
 
 This repo includes the implementation of our paper "On Tree-Based Neural Sentence Modeling" at EMNLP 2018 [1].
 
@@ -180,23 +181,15 @@ If you would like to train a bi-LSTM or tree LSTM with bidirectional leaf RNN, p
 
 #### Sentence Relation Classification
 ```
-python3 -m src.train_sentrel_classification \
-    --encoder-type $ENCODER_TYPE \
-    --data-prefix data/$TASK_NAME \
-    --vocab-path vocab/$TASK_NAME.vocab \
-    --num-classes $NUM_CLASSES \
-    --save-dir models/$TASK_NAME 
+python3 -m src.train_sentrel_classification --encoder-type $ENCODER_TYPE --data-prefix data/$TASK_NAME \
+    --vocab-path vocab/$TASK_NAME.vocab --num-classes $NUM_CLASSES --save-dir models/$TASK_NAME 
 ```
 which is roughly the same to sentence classification. 
 
 #### Sentence Generation
 ```
-python3 -m src.train_genration \
-    --encoder-type $ENCODER_TYPE \
-    --data-prefix data/$TASK_NAME \
-    --src-vocab-path vocab/$TASK_NAME_SOURCE.vocab \
-    --tgt-vocab-path vocab/$TASK_NAME_TARGET.vocab \
-    --save-dir models/$TASK_NAME 
+python3 -m src.train_genration --encoder-type $ENCODER_TYPE --data-prefix data/$TASK_NAME \
+    --src-vocab-path vocab/$TASK_NAME_SOURCE.vocab --tgt-vocab-path vocab/$TASK_NAME_TARGET.vocab --save-dir models/$TASK_NAME 
 ```
 
 ### Evaluate a Model
