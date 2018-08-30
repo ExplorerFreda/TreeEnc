@@ -1,4 +1,4 @@
-# On Tree-Based Neural Sentence Modeling
+# [On Tree-Based Neural Sentence Modeling](https://arxiv.org/pdf/1808.09644.pdf)
 
 This repo includes the implementation of our paper "On Tree-Based Neural Sentence Modeling" at EMNLP 2018 [1].
 
@@ -18,7 +18,7 @@ sentence classification, sentence relation classification and sentence generatio
 Our investigated sentence encoders are: (bi-)LSTMs, (binary) constituency tree LSTMs, balanced tree LSTMs, 
 fully left-branching tree LSTMs, fully right-branching tree LSTMs. The last three are trivial trees containing no 
 syntactic information. We also support bidirectional leaf RNN (LSTM) for tree-based encoders.
-![trees.jpg](misc/trees.jpg)
+![trees.jpg](misc/trees.jpg) 
 
 We get the following surprising conclusions:
 1. Trivial tree encoders get competitive or even better results on all the investigated tasks. 
