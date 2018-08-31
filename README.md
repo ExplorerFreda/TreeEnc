@@ -134,7 +134,7 @@ We evaluate the models in the following ten datasets, of which the metadata are 
 
 
 We provide a sample of our data format at ``data/``.
-You may process your own data following our [instruction](data/data-instruction.md).
+You may process your own data following our [instruction](data/README.md).
 Please [contact Freda](mailto:freda@ttic.edu) if you need a copy of our experimental datasets. The copyrights
 are held by the original authors.  
 
@@ -148,7 +148,7 @@ are held by the original authors.
 ### Preliminaries
 1. Tokenize and parse sentences using [ZPar](https://www.sutd.edu.sg/cmsresource/faculty/yuezhang/zpar.html) [3].
 2. Put data to ``data/``. Our data is in json, *e.g.*, ``data/dbpedia_train.json``. Please refer to our examples and 
-[instruction](data/data-instruction.md) for more details.
+[instruction](data/README.md) for more details.
 3. Put vocabularies to ``vocab/``, which is a list of words for each task.
 
 ### Train Models
