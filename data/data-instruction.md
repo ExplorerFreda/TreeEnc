@@ -19,8 +19,8 @@ For example, encoding of the following tree should be:
 ![parsing.jpg](../misc/parsing.jpg)
 #### Sentence Relation Classification
 * ``sentence_1 (str)``, ``sentence_2 (str)``: tokenized sentences. 
-* ``sentence_1_binary_encoding``, ``sentence_2_binary_encoding``: encodings of corresponding parsing trees. 
-* ``gold_label``: label for classification.
+* ``sentence_1_binary_encoding (str)``, ``sentence_2_binary_encoding (str)``: encodings of corresponding parsing trees. 
+* ``gold_label (int)``: label for classification.
 
 We apologize for the inconsistent names in the two types of classification tasks. 
 
