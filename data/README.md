@@ -17,6 +17,40 @@ For example, encoding of the following tree should be:
 "3,4,6,2,6,7,1,7,8,8,5,9,0,9,10". 
 
 ![parsing.jpg](../misc/parsing.jpg)
+
+To be specific, the following function takes a parenthesis format binary constituency parse tree (e.g., ```(I ((love (my (pet cat ))).))```, not sensitive to whitespaces -- the first lines tackles this problem), and outputs the desired encoding. 
+```Python
+def get_tree_encodings(binary_parse):
+    binary_parse = binary_parse.replace('(', ' ( ').replace(')', ' ) ')
+    sentence = binary_parse.replace('(', ' ').replace(')', ' ')
+    words = sentence.split()
+    components = binary_parse.split()
+    final_answers = list()
+    stack = list()
+    curr_index = 0
+    non_leaf_index = len(words)
+    for w in components:
+        if w == '(':  # guard
+            stack.append(w)
+        elif w != ')':  # shift
+            stack.append(curr_index)
+            curr_index += 1
+        else:  # reduce
+            index_left = stack[-2]
+            index_right = stack[-1]
+            final_answers.append(index_left)
+            final_answers.append(index_right)
+            final_answers.append(non_leaf_index)
+            stack = stack[:len(stack)-3]
+            stack.append(non_leaf_index)
+            non_leaf_index += 1
+    assert len(stack) == 1
+    assert stack[0] == 2 * curr_index - 2
+    assert curr_index == len(words)
+    final_answers = [str(x) for x in final_answers]
+    return ','.join(final_answers)
+```
+
 #### Sentence Relation Classification
 * ``sentence_1 (str)``, ``sentence_2 (str)``: tokenized sentences. 
 * ``sentence_1_binary_encoding (str)``, ``sentence_2_binary_encoding (str)``: encodings of corresponding parsing trees. 
